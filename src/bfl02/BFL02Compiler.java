@@ -30,6 +30,8 @@ public class BFL02Compiler {
     }
 
     public BFSource compileLine(String line) {
+        line = line.replaceAll("^ *", "")
+                .replaceAll("\t", "");
         String words[] = line.split(" ");
         if (words.length == 0) return new BFSource();
         String commandName = words[0];
@@ -67,7 +69,7 @@ public class BFL02Compiler {
             case "MES":
                 return bfl02.MES(mergeToOneParam(params, " "));
         }
-        throw new IllegalArgumentException(commandName + "という関数が分からない");
+        return new BFSource("\n" + line + "\n");
     }
 
     private int toInt(String s) {
