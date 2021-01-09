@@ -6,6 +6,7 @@ import bf.Optimizer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.StringJoiner;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -32,27 +33,39 @@ public class BFL02Compiler {
         String words[] = line.split(" ");
         if (words.length == 0) return new BFSource();
         String commandName = words[0];
-        List<Integer> params = getParameters(words);
+        List<String> params = getParameters(words);
 
         switch (commandName) {
+            case "ZERO":
+                return bfl02.ZERO(toInt(params.get(0)));
             case "ADDCONST":
-                return bfl02.ADDCONST(params.get(0), params.get(1));
+                return bfl02.ADDCONST(toInt(params.get(0)), toInt(params.get(1)));
             case "SETCONST":
-                return bfl02.SETCONST(params.get(0), params.get(1));
+                return bfl02.SETCONST(toInt(params.get(0)), toInt(params.get(1)));
             case "WHILE":
-                return bfl02.WHILE(params.get(0));
+                return bfl02.WHILE(toInt(params.get(0)));
             case "ENDWHILE":
-                return bfl02.ENDWHILE(params.get(0));
+                return bfl02.ENDWHILE(toInt(params.get(0)));
+            case "EQCONST":
+                return bfl02.EQCONST(toInt(params.get(0)), toInt(params.get(1)));
             case "MOV":
-                return bfl02.MOV(params.get(0), skipped(params, 1));
+                return bfl02.MOV(toInt(params.get(0)), toIntList(skipped(params, 1)));
             case "ADDVAR":
-                return bfl02.ADDVAR(params.get(0), skipped(params, 1));
+                return bfl02.ADDVAR(toInt(params.get(0)), toIntList(skipped(params, 1)));
+            case "SUBVAR":
+                return bfl02.SUBVAR(toInt(params.get(0)), toInt(params.get(1)));
             case "CPY":
-                return bfl02.CPY(params.get(0), skipped(params, 1));
+                return bfl02.CPY(toInt(params.get(0)), toIntList(skipped(params, 1)));
             case "IN":
-                return bfl02.IN(params.get(0));
+                return bfl02.IN(toInt(params.get(0)));
             case "OUT":
-                return bfl02.OUT(params.get(0));
+                return bfl02.OUT(toInt(params.get(0)));
+            case "IF":
+                return bfl02.IF(toInt(params.get(0)));
+            case "ENDIF":
+                return bfl02.ENDIF(toInt(params.get(0)));
+            case "MES":
+                return bfl02.MES(mergeToOneParam(params, " "));
         }
         throw new IllegalArgumentException(commandName + "という関数が分からない");
     }
@@ -61,13 +74,18 @@ public class BFL02Compiler {
         return Integer.parseInt(s);
     }
 
-    private List<Integer> getParameters(String words[]) {
+    private List<Integer> toIntList(List<String> stringList) {
+        return stringList.stream()
+                .mapToInt(this::toInt)
+                .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
+    }
+
+    private List<String> getParameters(String words[]) {
         if (words.length <= 1) return new ArrayList<>();
         int n = words.length - 1;
         try {
             return Stream.of(words)
                     .skip(1)
-                    .mapToInt(Integer::parseInt)
                     .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
         } catch (Exception e) {
             e.printStackTrace();
@@ -79,9 +97,17 @@ public class BFL02Compiler {
         );
     }
 
-    private List<Integer> skipped(List<Integer> array, int n) {
+    private List<String> skipped(List<String> array, int n) {
         return array.stream()
                 .skip(n)
                 .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
+    }
+
+    private String mergeToOneParam(List<String> params, String delimiter) {
+        return params.stream().collect(
+                () -> new StringJoiner(delimiter),
+                StringJoiner::add,
+                StringJoiner::merge
+        ).toString();
     }
 }
