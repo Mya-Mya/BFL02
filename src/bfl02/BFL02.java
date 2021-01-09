@@ -269,7 +269,7 @@ public class BFL02 {
      * middle
      * ENDIF P
      * は以下のように解釈されるため、[]構文でIFの動きを実装できる。
-     * GO(p)[GO(-P) middle *TEMP_POINTER=*P *P=0 GO(P)]*P=*TEMP_POINTER GO(-P)
+     * GO(P)[GO(-P) middle *TEMP_POINTER=*P *P=0 GO(P)]*P=*TEMP_POINTER GO(-P)
      * <p>
      * 注意
      * WHILE-ENDWHILEやIF-ENDIFの内包関係を壊してはいけない。
