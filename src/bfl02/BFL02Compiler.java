@@ -12,9 +12,15 @@ import java.util.stream.Stream;
 
 public class BFL02Compiler {
     private BFL02 bfl02;
+    private boolean showComment = false;
 
     public BFL02Compiler(BFL02 bfl02) {
+        this(bfl02, true);
+    }
+
+    public BFL02Compiler(BFL02 bfl02, boolean showComment) {
         this.bfl02 = bfl02;
+        this.showComment = showComment;
     }
 
     public BFSource compile(String text) {
@@ -68,8 +74,10 @@ public class BFL02Compiler {
                 return bfl02.ENDIF(toInt(params.get(0)));
             case "MES":
                 return bfl02.MES(mergeToOneParam(params, " "));
+            case "WRAP":
+                return bfl02.WRAP();
         }
-        return new BFSource("\n" + line + "\n");
+        return new BFSource(showComment ? "\n" + line + "\n" : "");
     }
 
     private int toInt(String s) {

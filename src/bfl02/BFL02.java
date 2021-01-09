@@ -302,6 +302,13 @@ public class BFL02 {
     }
 
     /**
+     * 出力を改行する。
+     */
+    public BFSource WRAP() {
+        return MES("\n");
+    }
+
+    /**
      * 何もしない。
      */
     public BFSource NONE() {
