@@ -45,7 +45,7 @@ public class BFL02 {
             for (int v : V) {
                 for (int i = before_v + 1; i < v; i++)
                     candidates.add(i);
-                before_v=v;
+                before_v = v;
             }
 
 
@@ -299,5 +299,29 @@ public class BFL02 {
             before = code;
         }
         return GOSUB(T, operation);
+    }
+
+    /**
+     * 何もしない。
+     */
+    public BFSource NONE() {
+        return new BFSource();
+    }
+
+    /**
+     * 変数と定数が同じ数か調べ、同じであれば1を、異なれば0をその変数へ設定する。
+     *
+     * @param P 対象の変数の番地
+     * @param N 比較したい定数
+     */
+    public BFSource EQCONST(int P, int N) {
+        return ZERO(T)
+                .append(MOV(P, List.of(T)))
+                .append(ADDCONST(P, 1))
+                .append(ADDCONST(T, -N))
+                .append(GOSUB(T, new BFSource("[")))//*P!=Nの時だけこのwhileに入る
+                .append(GOSUB(P, new BFSource("-")))
+                .append(ZERO(T))
+                .append(GOSUB(T, new BFSource("]")));
     }
 }
