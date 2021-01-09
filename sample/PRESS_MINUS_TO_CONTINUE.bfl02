@@ -1,0 +1,19 @@
+#最終更新 : 2021/01/09
+#概要 : マイナス記号以外を入力すると終了する。
+
+#変数1に1を代入
+SETCONST 1 1
+
+#ループ開始
+WHILE 1
+  #"PRESS MINUS TO CONTINUE"と表示
+  MES PRESS MINUS TO CONTINUE
+  #入力
+  IN 1
+  #入力されたものが45かどうか
+  EQCONST 1 45
+
+#ループ終了
+ENDWHILE 1
+#"SEEYOU"と表示
+MES SEE YOU!

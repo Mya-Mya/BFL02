@@ -1,0 +1,25 @@
+#最終更新:2021/01/09 概要:2つの入力が同じ文字かどうか判定する 変数:{1}:入力1 {2}:入力2 {3}:文字が同じかどうかのフラグ
+
+#入力
+MES TYPE
+IN 1
+WRAP
+MES TYPE AGAIN
+IN 2
+#フラグを立てておく
+SETCONST 3 1
+WRAP
+MES RESULT :
+#もしも入力1と入力2が異なったら
+SUBVAR 1 2
+IF 2
+    #フラグを降ろす
+    ZERO 3
+    #DIFFERENTと表示
+    MES DIFFERENT
+ENDIF 2
+#もしも入力1と入力2が同じだったら
+IF 3
+    #SAMEと表示
+    MES SAME
+ENDIF 3
