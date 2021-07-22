@@ -1,0 +1,59 @@
+#最終更新:2021/01/09 概要:99 bottles of beerの歌詞を出力する。
+{1}N:今のボトル数 {2}I:カウンタ {3}ONES:一の位 {4}ELSE:IFの否定をここに置いておく {5}TENS:十の位
+
+MES 99 bottles of beer on the wall, 99 bottles of beer.
+WRAP
+MES Take one down and pass it around,
+
+SETCONST 1 98
+ZERO 2
+ZERO 3
+ZERO 4
+ZERO 5
+
+SETCONST 5 9
+SETCONST 3 9
+
+WHILE 1
+    SETCONST 4 1
+    #一の位が1以上なら
+    IF 3
+        #一の位から1引く
+        ADDCONST 3 -1
+        #フラグを下ろす
+        SETCONST 4 0
+    ENDIF 3
+    #一の位が0なら
+    IF 4
+        #十の位から1引く
+        ADDCONST 5 -1
+        #一の位を9にする
+        SETCONST 3 9
+    ENDIF 4
+
+    #出力
+    ADDCONST 3 48
+    ADDCONST 5 48
+    OUT 5
+    OUT 3
+    MES bottles of beer on the wall.
+    WRAP
+    OUT 5
+    OUT 3
+    MES bottles of beer on the wall,
+    OUT 5
+    OUT 3
+    MES bottles of beer.
+    WRAP
+    MES Take one down and pass it around,
+    ADDCONST 3 -48
+    ADDCONST 5 -48
+
+    ADDCONST 1 -1
+ENDWHILE 1
+
+MES no more bottles of beer on the wall.
+WRAP
+MES No more bottles of beer on the wall, no more bottles of beer.
+WRAP
+MES Go to the store and buy some more, 99 bottles of beer on the wall.
