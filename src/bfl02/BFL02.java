@@ -1,6 +1,7 @@
 package bfl02;
 
 import bf.BFSource;
+import util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -72,22 +73,20 @@ public class BFL02 {
         if (P == 0) return new BFSource();
         int absP = Math.abs(P);
         char mover = P > 0 ? '>' : '<';
-        StringBuilder moverPTimesBuilder = new StringBuilder();
-        for (; absP > 0; absP--) moverPTimesBuilder.append(mover);
-        return new BFSource(moverPTimesBuilder.toString());
+        return new BFSource(StringUtil.repeatChar(mover, absP));
     }
 
     /**
      * 決められた番地へポインタを動かし、その番地で作業を行い、元の番地へポインタを戻す。
      * ORIGINAL = p
      * p = P
-     * middle
+     * process
      * p = ORIGINAL
      *
-     * @param middle 動かした先の番地で行う作業
+     * @param process 動かした先の番地で行う作業
      */
-    private BFSource GOSUB(int P, BFSource middle) {
-        return go(P).append(middle).append(go(-P));
+    private BFSource GOSUB(int P, BFSource process) {
+        return go(P).append(process).append(go(-P));
     }
 
     /**
@@ -109,9 +108,7 @@ public class BFL02 {
         if (N == 0) return new BFSource();
         int absN = Math.abs(N);
         char operator = N > 0 ? '+' : '-';
-        StringBuilder operatorNTimes = new StringBuilder();
-        for (; absN > 0; absN--) operatorNTimes.append(operator);
-        return new BFSource(operatorNTimes.toString());
+        return new BFSource(StringUtil.repeatChar(operator, absN));
     }
 
     /**
